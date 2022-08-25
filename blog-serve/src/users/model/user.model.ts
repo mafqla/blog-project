@@ -6,7 +6,7 @@ import {
   DataType,
   BeforeCreate
 } from 'sequelize-typescript'
-import { Exclude } from 'class-transformer'
+
 import * as bcrypt from 'bcrypt'
 @Table
 export class User extends Model {
@@ -26,7 +26,6 @@ export class User extends Model {
   })
   username: string
 
-  @Exclude()
   @Column({
     type: DataType.STRING(255),
     allowNull: false,
@@ -80,7 +79,7 @@ export class User extends Model {
 
   @Column({
     type: DataType.INTEGER,
-    defaultValue: 3,
+    defaultValue: 2,
     allowNull: true,
     comment: '角色id'
   })

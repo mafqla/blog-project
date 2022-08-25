@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
 import { CreateUserDto } from './dto/create-user.dto'
-import { UserInfoDto } from './dto/user-info.dto'
 import { User } from './model/user.model'
 
 @Injectable()
@@ -35,14 +34,17 @@ export class UsersService {
 
   /**
    *获取用户信息
-   * @param userInfo
+   * @param userId
    * @returns
    */
-  async getUserInfo(userInfo: UserInfoDto) {
+  async getUserInfo(userId: string) {
     const result = await this.userRepository.findOne({
-      where: { id: userInfo }
+      where: { id: userId }
     })
 
+    if (!result) {
+      throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST)
+    }
     return result
   }
 }
