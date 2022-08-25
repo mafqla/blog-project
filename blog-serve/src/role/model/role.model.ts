@@ -12,7 +12,7 @@ export class Role extends Model {
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,
-    allowNull: false,
+    allowNull: true,
     comment: '角色id'
   })
   roleId: number
@@ -54,7 +54,8 @@ export class Role extends Model {
 
   @Column({
     type: DataType.BOOLEAN,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: false,
     comment: '是否删除'
   })
   isDeleted: boolean
@@ -62,7 +63,7 @@ export class Role extends Model {
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
-    allowNull: false,
+    allowNull: true,
     comment: '创建时间'
   })
   createdAt: Date
@@ -70,7 +71,7 @@ export class Role extends Model {
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
-    allowNull: false,
+    allowNull: true,
     comment: '更新时间'
   })
   updatedAt: Date

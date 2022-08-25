@@ -1,4 +1,5 @@
-import { Controller, Get, Param } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common'
+import { UserInfoDto } from './dto/user-info.dto'
 import { UsersService } from './users.service'
 // import { CreateUserDto } from './dto/create-user.dto'
 // import { UpdateUserDto } from './dto/update-user.dto'
@@ -12,15 +13,10 @@ export class UsersController {
   //   return this.usersService.create(createUserDto)
   // }
 
-  @Get('/userName')
-  getUserByUserName(@Param('userName') userName: string) {
-    return this.usersService.getUsersByUserName(userName)
+  @Get('info')
+  findOne(@Query('id') id: UserInfoDto) {
+    return this.usersService.getUserInfo(id)
   }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.usersService.findOne(+id)
-  // }
 
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

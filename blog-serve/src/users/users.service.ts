@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { CreateUserDto } from './dto/create-user.dto'
+import { UserInfoDto } from './dto/user-info.dto'
 import { User } from './model/user.model'
 
 @Injectable()
@@ -9,27 +11,38 @@ export class UsersService {
     private readonly userRepository: typeof User
   ) {}
 
-  // 根据用户名查询用户是否存在
-  async getUsersByUserName(userName: string) {
-    try {
-      const users = await this.userRepository.findAll<User>({
-        where: {
-          userName: userName
-        }
-      })
-      if (users) {
-        return {
-          code: 200,
-          data: users,
-          message: '查询成功'
-        }
-      }
-    } catch (err) {
-      return {
-        code: 404,
-        data: err,
-        message: '用户不存在'
-      }
+  /**
+   *账号密码注册
+   * @param createUser
+   * @returns
+   */
+  async register(createUser: CreateUserDto) {
+    const { username } = createUser
+
+    const user = await this.userRepository.findOne({
+      where: { username: username }
+    })
+    if (user) {
+      throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST)
     }
+    const newuser = await this.userRepository.create({
+      username: createUser.username,
+      password: createUser.password
+    })
+
+    return newuser
+  }
+
+  /**
+   *获取用户信息
+   * @param userInfo
+   * @returns
+   */
+  async getUserInfo(userInfo: UserInfoDto) {
+    const result = await this.userRepository.findOne({
+      where: { id: userInfo }
+    })
+
+    return result
   }
 }

@@ -3,16 +3,18 @@ import {
   Model,
   Table,
   PrimaryKey,
-  DataType
+  DataType,
+  BeforeCreate
 } from 'sequelize-typescript'
-
+import { Exclude } from 'class-transformer'
+import * as bcrypt from 'bcrypt'
 @Table
 export class User extends Model {
   @PrimaryKey
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
-    allowNull: false,
+    allowNull: true,
     comment: '用户id'
   })
   id: number
@@ -22,14 +24,25 @@ export class User extends Model {
     allowNull: false,
     comment: '用户名'
   })
-  useName: string
+  username: string
 
-  @Column
+  @Exclude()
+  @Column({
+    type: DataType.STRING(255),
+    allowNull: false,
+    comment: '密码'
+  })
   password: string
+
+  @BeforeCreate
+  static async encryptPwd(instance: User) {
+    const saltRounds = 10
+    instance.password = await bcrypt.hashSync(instance.password, saltRounds)
+  }
 
   @Column({
     type: DataType.STRING(20),
-    allowNull: false,
+    allowNull: true,
     comment: '用户邮箱'
   })
   email: string
@@ -44,7 +57,7 @@ export class User extends Model {
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
-    allowNull: false,
+    allowNull: true,
     comment: '创建时间'
   })
   createdAt: Date
@@ -52,7 +65,7 @@ export class User extends Model {
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
-    allowNull: false,
+    allowNull: true,
     comment: '更新时间'
   })
   updatedAt: Date
@@ -60,23 +73,23 @@ export class User extends Model {
   @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
-    allowNull: false,
+    allowNull: true,
     comment: '是否删除'
   })
   deleted: boolean
 
   @Column({
     type: DataType.INTEGER,
-    defaultValue: 0,
-    allowNull: false,
+    defaultValue: 3,
+    allowNull: true,
     comment: '角色id'
   })
-  roleId: string
+  roleType: number
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     defaultValue: 0,
-    allowNull: false,
+    allowNull: true,
     comment: '状态'
   })
   status: string
@@ -84,7 +97,7 @@ export class User extends Model {
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
-    allowNull: false,
+    allowNull: true,
     comment: '最后登录时间'
   })
   lastLogin: Date
@@ -92,7 +105,7 @@ export class User extends Model {
   @Column({
     type: DataType.DATE,
     defaultValue: DataType.NOW,
-    allowNull: false,
+    allowNull: true,
     comment: '退出登录时间'
   })
   lastLogout: Date
@@ -107,21 +120,21 @@ export class User extends Model {
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
     comment: '登录ip'
   })
   lastIp: string
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: '登录设备'
   })
   lastDevice: string
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
     comment: '登录地址'
   })
   lastLocation: string
