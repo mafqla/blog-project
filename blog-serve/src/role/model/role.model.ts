@@ -70,7 +70,6 @@ export class Role extends Model {
 
   @Column({
     type: DataType.DATE,
-    defaultValue: DataType.NOW,
     allowNull: true,
     comment: '更新时间'
   })

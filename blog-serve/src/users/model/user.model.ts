@@ -20,6 +20,21 @@ export class User extends Model {
   id: number
 
   @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    comment: '用户信息id'
+  })
+  userInfoId: number
+
+  @Column({
+    type: DataType.INTEGER,
+    defaultValue: 2,
+    allowNull: false,
+    comment: '角色id'
+  })
+  roleType: number
+
+  @Column({
     type: DataType.STRING(20),
     allowNull: false,
     comment: '用户名'
@@ -40,36 +55,6 @@ export class User extends Model {
   }
 
   @Column({
-    type: DataType.STRING(20),
-    allowNull: true,
-    comment: '用户邮箱'
-  })
-  email: string
-
-  @Column({
-    type: DataType.STRING(20),
-    allowNull: true,
-    comment: '用户头像'
-  })
-  avatar: string
-
-  @Column({
-    type: DataType.DATE,
-    defaultValue: DataType.NOW,
-    allowNull: true,
-    comment: '创建时间'
-  })
-  createdAt: Date
-
-  @Column({
-    type: DataType.DATE,
-    defaultValue: DataType.NOW,
-    allowNull: true,
-    comment: '更新时间'
-  })
-  updatedAt: Date
-
-  @Column({
     type: DataType.BOOLEAN,
     defaultValue: false,
     allowNull: true,
@@ -78,44 +63,17 @@ export class User extends Model {
   deleted: boolean
 
   @Column({
-    type: DataType.INTEGER,
-    defaultValue: 2,
-    allowNull: true,
-    comment: '角色id'
-  })
-  roleType: number
-
-  @Column({
     type: DataType.STRING,
-    defaultValue: 0,
     allowNull: true,
-    comment: '状态'
+    comment: '用户状态'
   })
   status: string
 
   @Column({
-    type: DataType.DATE,
-    defaultValue: DataType.NOW,
-    allowNull: true,
-    comment: '最后登录时间'
-  })
-  lastLogin: Date
-
-  @Column({
-    type: DataType.DATE,
-    defaultValue: DataType.NOW,
-    allowNull: true,
-    comment: '退出登录时间'
-  })
-  lastLogout: Date
-
-  @Column({
     type: DataType.INTEGER,
-    defaultValue: 0,
-    allowNull: false,
-    comment: '登录次数'
+    comment: '登录类型'
   })
-  lastActivity: Date
+  loginType: string
 
   @Column({
     type: DataType.INTEGER,
@@ -137,4 +95,27 @@ export class User extends Model {
     comment: '登录地址'
   })
   lastLocation: string
+
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+    allowNull: true,
+    comment: '最后登录时间'
+  })
+  lastLogin: Date
+
+  @Column({
+    type: DataType.DATE,
+    defaultValue: DataType.NOW,
+    allowNull: true,
+    comment: '创建时间'
+  })
+  createdAt: Date
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    comment: '更新时间'
+  })
+  updatedAt: Date
 }
