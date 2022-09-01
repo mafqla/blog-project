@@ -42,15 +42,16 @@ export class UsersService {
    * @param createUser
    * @returns
    */
-  async register(createUser: CreateUserDto, ip: string) {
+  async register(createUser: CreateUserDto) {
     const { username, nickname, password, confirmPassword } = createUser
 
     console.log(username, nickname, password, confirmPassword)
     // 获取ip地址
-    const ipAddr = parseIp(ip)
-    // console.log(ipAddr)
-    const ipa = getIp()
-    console.log(ipa)
+    const getIpContent = await getIp()
+    const { cip, cid, cname } = getIpContent
+
+    console.log(cip, cid, cname)
+
 
     // 验证用户名
     if (!verifyUserName(username)) {
@@ -92,8 +93,8 @@ export class UsersService {
       userInfoId: userInfoId,
       username: username,
       password: password,
-      lastIp: ip,
-      lastLoaction: ipAddr
+      lastIp: cip,
+      lastLocation: cname
     })
     return {
       message: '注册成功'

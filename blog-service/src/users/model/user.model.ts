@@ -77,7 +77,7 @@ export class User extends Model {
   loginType: string
 
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.STRING,
     allowNull: true,
     comment: '登录ip'
   })

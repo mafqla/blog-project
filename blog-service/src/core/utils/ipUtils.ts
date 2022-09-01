@@ -24,13 +24,18 @@ export const getIp = async () => {
   const ip = await axios.get('http://pv.sohu.com/cityjson?ie=utf-8', {
     responseType: 'blob'
   })
-  const returnCitySN = ip.data
+  const data = ip.data
+  //获取{}中的内容
+  const str = data.slice(data.indexOf('{'), data.lastIndexOf('}') + 1)
+
+  const returnCitySN = JSON.parse(str)
+  // console.log(returnCitySN)
 
   const cip = returnCitySN.cip
-  const cid = returnCitySN.returnCitySN.cid
-  const cname = returnCitySN.returnCitySN.cname
+  const cid = returnCitySN.cid
+  const cname = returnCitySN.cname
 
-  console.log(cip, cid, cname)
+  // console.log(cip, cid, cname)
   return {
     cip,
     cid,

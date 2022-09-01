@@ -10,7 +10,7 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  register(@Body() createUser: CreateUserDto, @RealIP() ip: string) {
-    return this.usersService.register(createUser, ip)
+  register(@Body() createUser: CreateUserDto) {
+    return this.usersService.register(createUser)
   }
 }
