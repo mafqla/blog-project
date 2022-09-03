@@ -1,8 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { RealIP } from 'src/core/utils/ipUtils'
 import { CreateUserDto } from 'src/users/dto/create-user.dto'
 import { UsersService } from 'src/users/users.service'
-import { Public } from './auth.decorator'
+import { Public } from '../core/decorators/auth.decorator'
 
 @Controller('auth')
 export class AuthController {

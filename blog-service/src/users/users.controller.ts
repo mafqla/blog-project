@@ -8,7 +8,11 @@ import {
   Query,
   Request
 } from '@nestjs/common'
-import { Public } from 'src/auth/auth.decorator'
+import { Public } from 'src/core/decorators/auth.decorator'
+import {
+  QueryParams,
+  QueryParamsResult
+} from 'src/core/decorators/queryparams.decorator'
 import { UsersService } from './users.service'
 
 @Controller('users')
@@ -25,6 +29,14 @@ export class UsersController {
     return this.usersService.findOne(username)
   }
 
+  @Public()
+  @Get('test')
+  findOne2(
+    @Param('id') id: string,
+    @QueryParams() { visitor }: QueryParamsResult
+  ) {
+    return this.usersService.getUserInfo(id, visitor)
+  }
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
   //   return this.usersService.update(+id, updateUserDto)

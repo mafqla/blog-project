@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common'
-import { Public } from 'src/auth/auth.decorator'
+import { Public } from 'src/core/decorators/auth.decorator'
 import { EmailService } from './email.service'
 
 @Controller('email')

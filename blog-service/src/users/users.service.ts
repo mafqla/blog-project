@@ -1,6 +1,7 @@
+import { QueryVisitor } from './../core/decorators/queryparams.decorator'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { getIp, parseIp } from 'src/core/utils/ipUtils'
+import { getIp } from 'src/core/utils/ipUtils'
 import {
   verifyNickName,
   verifyPassword,
@@ -51,7 +52,6 @@ export class UsersService {
     const { cip, cid, cname } = getIpContent
 
     console.log(cip, cid, cname)
-
 
     // 验证用户名
     if (!verifyUserName(username)) {
@@ -116,4 +116,21 @@ export class UsersService {
   //   }
   //   return result
   // }
+
+  async getUserInfo(id: string, vistor: QueryVisitor) {
+    const ip = vistor.ip
+    const ua = vistor.ua
+    const origin = vistor.origin
+    const referer = vistor.referer
+    console.log(ip, ua, origin, referer)
+
+    const result = await this.userRepository.findOne({
+      where: { id: id }
+    })
+
+    if (!result) {
+      throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST)
+    }
+    return result
+  }
 }
