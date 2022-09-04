@@ -11,6 +11,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp() // 获取请求上下文
     const response = ctx.getResponse() // 获取请求上下文中的 response对象
     const status = exception.getStatus() // 获取异常状态码
+
     const request = ctx.getRequest() // 获取请求上下文中的 request对象
     const exceptionRes: any = exception.getResponse() // 获取异常响应体
     const error = exception.message // 获取异常响应体中的 error字段
@@ -18,6 +19,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (status === 401) {
       message = '身份过期，请重新登录'
+    } else if (status === 403) {
+      message = '没有权限'
+    } else if (status === 404) {
+      message = '请求资源不存在'
+    } else if (status === 500) {
+      message = '服务器内部错误'
     }
     // 设置错误响应体
     const errorResponse = {
