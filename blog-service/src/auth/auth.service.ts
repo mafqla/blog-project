@@ -1,23 +1,45 @@
-import { Injectable } from '@nestjs/common'
+import { UsersService } from 'src/users/users.service'
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable
+} from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-
+import * as bcrypt from 'bcrypt'
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private jwtService: JwtService,
+    private usersService: UsersService
+  ) {}
 
-  // async validateUser(username: string, pass: string): Promise<any> {
-  //   //   const user = await this.usersService.register(username)
-  //   //   if (user && user.password === pass) {
-  //   //     const { password, ...result } = user
-  //   //     return result
-  //   //   }
-  //   //   return null
-  // }
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.usersService.findOne(username)
+
+    if (!user) {
+      throw new BadRequestException('用户名不正确')
+    }
+
+    if (!bcrypt.compareSync(password, user.password)) {
+      throw new HttpException('密码不正确', HttpStatus.BAD_REQUEST)
+    }
+
+    return user
+  }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.id }
+    const payload = {
+      id: user.id,
+      userInfoId: user.userInfoId,
+      roleType: user.roleType,
+      username: user.username
+    }
     return {
-      access_token: this.jwtService.sign(payload)
+      data: {
+        token: this.jwtService.sign(payload)
+      },
+      message: '登录成功'
     }
   }
 }

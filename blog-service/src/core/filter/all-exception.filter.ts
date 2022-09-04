@@ -34,7 +34,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     Logger.error(logFormat)
     response.status(status).json({
       code: status,
-      message: `500 Internal Server Error`
+      message: `Service Error`
     })
   }
 }

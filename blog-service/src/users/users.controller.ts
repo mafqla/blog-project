@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Ip,
   Param,
   Post,
   Query,
@@ -29,7 +28,6 @@ export class UsersController {
     return this.usersService.findOne(username)
   }
 
-  @Public()
   @Get('test')
   findOne2(
     @Param('id') id: string,

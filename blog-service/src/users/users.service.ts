@@ -31,10 +31,17 @@ export class UsersService {
           username: username
         }
       })
+      const data: any = {
+        id: user.id,
+        userInfoId: user.userInfoId,
+        roleType: user.roleType,
+        username: user.username,
+        password: user.password
+      }
 
-      return user
+      return data
     } catch (error) {
-      throw new HttpException('查询失败', HttpStatus.BAD_REQUEST)
+      throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR)
     }
   }
 
