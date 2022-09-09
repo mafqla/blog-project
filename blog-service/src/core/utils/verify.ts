@@ -16,9 +16,6 @@ export const verifyUserName = (username: string) => {
       HttpStatus.BAD_REQUEST
     )
   }
-  // if (!/^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/.test(username)) {
-  //   throw new HttpException('邮箱格式不正确', HttpStatus.BAD_REQUEST)
-  // }
   return true
 }
 /**
