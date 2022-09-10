@@ -1,18 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-  Request
-} from '@nestjs/common'
+import { Controller, Get, Query, UseGuards } from '@nestjs/common'
 import { Public } from 'src/core/decorators/auth.decorator'
-import {
-  QueryParams,
-  QueryParamsResult
-} from 'src/core/decorators/queryparams.decorator'
+import { RbacGuard } from '../auth/guards/rbac.guard'
 import { UsersService } from './users.service'
+import { roleConstans as roleType } from '../auth/constants'
 
 @Controller('users')
 export class UsersController {
@@ -29,11 +19,9 @@ export class UsersController {
   }
 
   @Get('test')
-  findOne2(
-    @Param('id') id: string,
-    @QueryParams() { visitor }: QueryParamsResult
-  ) {
-    return this.usersService.getUserInfo(id, visitor)
+  @UseGuards(new RbacGuard(roleType.ADMIN))
+  findOne2(@Query('id') id: string) {
+    return this.usersService.getUserInfo(id)
   }
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

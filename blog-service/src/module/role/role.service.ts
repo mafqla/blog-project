@@ -9,24 +9,31 @@ export class RoleService implements OnModuleInit {
   async onModuleInit() {
     //初始化role表
     const superAdmin = {
-      roleName: 'super-admin',
+      roleName: 'root',
       roleType: '0',
-      roleDesc: 'Super-admin',
+      roleDesc: 'root',
       createdBy: 1,
       updatedBy: 1
     }
     const admin = {
-      roleName: '管理员',
+      roleName: 'admin',
       roleType: '1',
       roleDesc: 'admin',
       createdBy: 1,
       updatedBy: 1
     }
 
-    const user = {
-      roleName: '用户',
+    const test = {
+      roleName: 'test',
       roleType: '2',
-      roleDesc: '用户',
+      roleDesc: 'test',
+      createdBy: 1,
+      updatedBy: 1
+    }
+    const user = {
+      roleName: 'user',
+      roleType: '3',
+      roleDesc: 'user',
       createdBy: 1,
       updatedBy: 1
     }
@@ -37,6 +44,10 @@ export class RoleService implements OnModuleInit {
     })
     await Role.findOrCreate({
       where: admin,
+      logging: false //不输出日志
+    })
+    await Role.findOrCreate({
+      where: test,
       logging: false //不输出日志
     })
     await Role.findOrCreate({

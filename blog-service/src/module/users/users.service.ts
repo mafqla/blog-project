@@ -124,20 +124,24 @@ export class UsersService {
   //   return result
   // }
 
-  async getUserInfo(id: string, vistor: QueryVisitor) {
-    const ip = vistor.ip
-    const ua = vistor.ua
-    const origin = vistor.origin
-    const referer = vistor.referer
-    console.log(ip, ua, origin, referer)
+  async getUserInfo(id: string) {
+    // const ip = vistor.ip
+    // const ua = vistor.ua
+    // const origin = vistor.origin
+    // const referer = vistor.referer
+    // console.log(ip, ua, origin, referer)
 
     const result = await this.userRepository.findOne({
+      attributes: ['id', 'username', 'roleType'],
       where: { id: id }
     })
 
     if (!result) {
       throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST)
     }
-    return result
+    return {
+      data: result,
+      message: '获取用户信息成功'
+    }
   }
 }

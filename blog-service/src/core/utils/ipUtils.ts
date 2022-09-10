@@ -11,7 +11,7 @@ export const RealIP = createParamDecorator(
     console.log(device)
     //获取ip地址
     const ip = requestIp.getClientIp(request)
-    console.log(ip)
+    // console.log(ip)
 
     return requestIp.getClientIp(request)
   }
