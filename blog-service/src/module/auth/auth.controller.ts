@@ -3,8 +3,6 @@ import { Public } from 'src/core/decorators/auth.decorator'
 import { CreateUserDto } from '../users/dto/create-user.dto'
 import { UsersService } from '../users/users.service'
 import { AuthService } from './auth.service'
-import { RbacGuard } from './guards/rbac.guard'
-import { roleConstans as roleType } from './constants'
 
 @Controller('auth')
 export class AuthController {
