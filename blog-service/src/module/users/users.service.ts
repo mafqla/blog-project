@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
-import { QueryVisitor } from 'src/core/decorators/queryparams.decorator'
 import { getIp } from 'src/core/utils/ipUtils'
 import {
   verifyNickName,

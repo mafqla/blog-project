@@ -15,8 +15,8 @@ import { User } from '../users/model/user.model'
     UsersModule,
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '10h' }
+      secret: jwtConstants.secret
+      // signOptions: { expiresIn: '10h' }
     }),
     SequelizeModule.forFeature([User])
   ],

@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import * as bcrypt from 'bcrypt'
+import { RedisInstance } from 'config/redis'
 import { UsersService } from '../users/users.service'
 @Injectable()
 export class AuthService {
@@ -35,9 +36,14 @@ export class AuthService {
       roleType: user.roleType,
       username: user.username
     }
+    const token = this.jwtService.sign(payload)
+    // 实例化 redis
+    const redis = await RedisInstance.initRedis('auth.certificate', 0)
+    // 将用户信息和 token 存入 redis，并设置失效时间，语法：[key, seconds, value]
+    await redis.setex(`${user.id}-${user.username}`, 300, `${token}`)
     return {
       data: {
-        token: this.jwtService.sign(payload)
+        token
       },
       message: '登录成功'
     }

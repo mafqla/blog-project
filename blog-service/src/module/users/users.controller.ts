@@ -19,7 +19,7 @@ export class UsersController {
   }
 
   @Get('test')
-  @UseGuards(new RbacGuard(roleType.ADMIN))
+  @UseGuards(new RbacGuard(roleType.TEST))
   findOne2(@Query('id') id: string) {
     return this.usersService.getUserInfo(id)
   }
