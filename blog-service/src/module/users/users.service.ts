@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
 import { InjectModel } from '@nestjs/sequelize'
+import { RedisInstance } from 'config/redis'
 import { getIp } from 'src/core/utils/ipUtils'
 import {
   verifyNickName,
@@ -40,7 +41,8 @@ export class UsersService {
 
       return data
     } catch (error) {
-      throw new HttpException('用户不存在', HttpStatus.BAD_REQUEST)
+      console.error(error)
+      return void 0
     }
   }
 
@@ -50,8 +52,7 @@ export class UsersService {
    * @returns
    */
   async register(createUser: CreateUserDto) {
-    const { username, nickname, password, confirmPassword } = createUser
-
+    const { username, nickname, password, confirmPassword, code } = createUser
     console.log(username, nickname, password, confirmPassword)
     // 获取ip地址
     const getIpContent = await getIp()
@@ -83,7 +84,18 @@ export class UsersService {
     // 查询用户呢称是否存在
     const isNickName = await this.userInfoService.isNickNameExist(nickname)
     if (isNickName) {
+      // console.log(isNickName)
       throw new HttpException('昵称重复', HttpStatus.BAD_REQUEST)
+    }
+    // 验证码验证
+    // 获取 redis 里缓存的 code
+    const redis = await RedisInstance.initRedis('TokenGuard.canActivate', 0)
+    const key = `${code}`
+    console.log(key)
+    const cache = await redis.get(key)
+    if (code !== cache) {
+      // 如果 code 不匹配，返回错误
+      throw new HttpException('验证码错误', HttpStatus.BAD_REQUEST)
     }
     // 添加用户信息
     const createUserInfoDto = {

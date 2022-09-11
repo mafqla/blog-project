@@ -22,7 +22,7 @@ import { EmailController } from './email.controller'
         from: '寻觅博客注册 <sendmail_post@qq.com>' //发送人 你的邮箱地址
       },
       template: {
-        dir: join(process.cwd(), './src/email/email-template'), //这里就是你的ejs模板文件夹路径
+        dir: join(process.cwd(), './src/module/email/email-template'), //这里就是你的ejs模板文件夹路径
         adapter: new EjsAdapter(),
         options: {
           strict: true //严格模式

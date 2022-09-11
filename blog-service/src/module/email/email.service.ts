@@ -1,5 +1,6 @@
 import { ISendMailOptions, MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
+import { RedisInstance } from 'config/redis'
 // import path from 'path';
 
 @Injectable()
@@ -13,6 +14,10 @@ export class EmailService {
   async sendEmailCode(data) {
     try {
       const code = Math.random().toString().slice(-6)
+      // 实例化 redis
+      const redis = await RedisInstance.initRedis('auth.certificate', 0)
+      // 将验证码存入 redis，并设置失效时间，语法：[key, seconds, value]
+      await redis.setex(`${code}`, 300, `${code}`)
       const date = new Date()
       const sendMailOptions: ISendMailOptions = {
         to: data.email,
